@@ -55,7 +55,7 @@ export default function CheckoutPage() {
           phone,
           paymentMethod: "TARJETA",
           requiresInvoice,
-          fiscalData: requiresInvoice ? { rfc, nombre: rfc, regimen: "601", cp: "06600", usoCfdi: "G03" } : undefined,
+          fiscalData: requiresInvoice && rfc.length >= 12 ? { rfc, nombre: rfc, regimen: "601", cp: "06600", usoCfdi: "G03" } : undefined,
           couponCode: couponApplied ? "DEMO10" : undefined,
         }),
       });
@@ -147,6 +147,7 @@ export default function CheckoutPage() {
                   <div className="mt-3">
                     <label className="text-xs text-gray-400 mb-1 block">RFC</label>
                     <input value={rfc} onChange={(e) => setRfc(e.target.value.toUpperCase())} placeholder="XAXX010101000" className="w-full bg-dark border border-dark-border rounded-lg px-3 py-2 text-white text-sm focus:border-brand focus:outline-none" />
+                    {rfc.length > 0 && rfc.length < 12 && <p className="text-xs text-error mt-1">RFC debe tener 12-13 caracteres</p>}
                   </div>
                 )}
               </div>
