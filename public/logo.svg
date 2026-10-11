@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 48" fill="none">
+  <!-- Tire icon -->
+  <circle cx="24" cy="24" r="20" fill="#111" stroke="#FFC20E" stroke-width="3"/>
+  <circle cx="24" cy="24" r="14" fill="#222" stroke="#FFC20E" stroke-width="1.5"/>
+  <circle cx="24" cy="24" r="6" fill="#FFC20E"/>
+  <!-- Tread marks -->
+  <line x1="24" y1="4" x2="24" y2="10" stroke="#FFC20E" stroke-width="2" stroke-linecap="round"/>
+  <line x1="24" y1="38" x2="24" y2="44" stroke="#FFC20E" stroke-width="2" stroke-linecap="round"/>
+  <line x1="4" y1="24" x2="10" y2="24" stroke="#FFC20E" stroke-width="2" stroke-linecap="round"/>
+  <line x1="38" y1="24" x2="44" y2="24" stroke="#FFC20E" stroke-width="2" stroke-linecap="round"/>
+  <line x1="9.86" y1="9.86" x2="14.1" y2="14.1" stroke="#FFC20E" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="33.9" y1="33.9" x2="38.14" y2="38.14" stroke="#FFC20E" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="38.14" y1="9.86" x2="33.9" y2="14.1" stroke="#FFC20E" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="14.1" y1="33.9" x2="9.86" y2="38.14" stroke="#FFC20E" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Brand text -->
+  <text x="56" y="22" fill="#FFC20E" font-family="Arial,sans-serif" font-size="20" font-weight="800" letter-spacing="0.5">RodaMax</text>
+  <text x="56" y="40" fill="#999" font-family="Arial,sans-serif" font-size="12" font-weight="500" letter-spacing="2">LLANTAS</text>
+</svg>
