@@ -6,7 +6,7 @@
     "postinstall": "prisma generate",
     "predev": "prisma db push --skip-generate && tsx prisma/seed.ts",
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "prisma generate && prisma db push --skip-generate && tsx prisma/seed.ts && next build",
     "start": "next start",
     "lint": "eslint",
     "seed": "tsx prisma/seed.ts",

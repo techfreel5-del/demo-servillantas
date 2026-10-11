@@ -4,8 +4,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ─── CATALOGO / E-COMMERCE ─────────────────────────────────────
@@ -52,7 +53,7 @@ model Product {
   satProductKey        String              @default("40111900")
   imageSvgSeed         Int                 @default(1)
   isFeatured           Boolean             @default(false)
-  description          String              @default("")
+  description          String              @default("") @db.Text
   inventory            BranchInventory[]
   orderItems           OrderItem[]
   reservations         InventoryReservation[]
@@ -117,7 +118,7 @@ model Order {
   phone            String              @default("")
   branchId         String
   fulfillment      String              @default("PICKUP")
-  shippingAddress  String              @default("{}")
+  shippingAddress  String              @default("{}") @db.Text
   status           String              @default("PENDIENTE_PAGO")
   paymentMethod    String              @default("TARJETA")
   subtotalCents    Int                 @default(0)
@@ -126,7 +127,7 @@ model Order {
   taxCents         Int                 @default(0)
   totalCents       Int                 @default(0)
   requiresInvoice  Boolean             @default(false)
-  fiscalData       String              @default("{}")
+  fiscalData       String              @default("{}") @db.Text
   correlationId    String              @default("")
   couponCode       String?
   createdAt        DateTime            @default(now())
@@ -161,7 +162,7 @@ model IdempotencyKey {
   requestHash  String
   status       String   @default("IN_PROGRESS")
   responseCode Int?
-  responseBody String?
+  responseBody String?   @db.Text
   orderId      String?
   createdAt    DateTime @default(now())
   expiresAt    DateTime
@@ -177,7 +178,7 @@ model Payment {
   status            String   @default("PENDING")
   amountCents       Int
   method            String   @default("TARJETA")
-  rawPayload        String   @default("{}")
+  rawPayload        String   @default("{}") @db.Text
   createdAt         DateTime @default(now())
   order             Order    @relation(fields: [orderId], references: [id])
 }
@@ -188,7 +189,7 @@ model WebhookEvent {
   type            String
   signatureValid  Boolean   @default(false)
   processedAt     DateTime?
-  payload         String    @default("{}")
+  payload         String    @default("{}") @db.Text
   createdAt       DateTime  @default(now())
 }
 
@@ -226,7 +227,7 @@ model Invoice {
   subtotal               Int
   iva                    Int
   total                  Int
-  xml                    String
+  xml                    String    @db.Text
   status                 String    @default("TIMBRADA")
   stampedAt              DateTime  @default(now())
   order                  Order     @relation(fields: [orderId], references: [id])
@@ -239,7 +240,7 @@ model OutboxEvent {
   type          String
   aggregateId   String
   correlationId String    @default("")
-  payload       String    @default("{}")
+  payload       String    @default("{}") @db.Text
   status        String    @default("PENDING")
   attempts      Int       @default(0)
   maxAttempts   Int       @default(5)
@@ -256,9 +257,9 @@ model AuditLog {
   source        String   @default("CHECKOUT")
   level         String   @default("INFO")
   httpStatus    Int?
-  message       String
+  message       String    @db.Text
   durationMs    Int?
-  metadata      String   @default("{}")
+  metadata      String   @default("{}") @db.Text
   createdAt     DateTime @default(now())
 }
 
