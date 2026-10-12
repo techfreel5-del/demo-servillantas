@@ -8,11 +8,10 @@ import { lockInventory } from "@/lib/inventory";
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 
-let folioCounter = 0;
-
 function generateFolio(): string {
-  folioCounter++;
-  return `RDX-${String(folioCounter).padStart(6, "0")}`;
+  const ts = Date.now().toString(36).toUpperCase();
+  const rand = randomUUID().slice(0, 4).toUpperCase();
+  return `RDX-${ts}-${rand}`;
 }
 
 export async function POST(req: NextRequest) {
@@ -200,7 +199,7 @@ export async function POST(req: NextRequest) {
       } catch {}
 
       await logAudit("CHECKOUT", "ERROR", `Error en inventory lock: ${msg}`, { correlationId, httpStatus: 500 });
-      return problemResponse({ type: "INTERNAL_ERROR", title: "Error en checkout", status: 500, correlationId });
+      return problemResponse({ type: "INTERNAL_ERROR", title: "Error en checkout", status: 500, detail: msg, correlationId });
     }
 
     const order = await prisma.order.findUnique({

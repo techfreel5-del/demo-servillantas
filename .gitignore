@@ -45,3 +45,6 @@ app/generated/
 # SQLite
 *.db
 *.db-journal
+
+.vercel
+.env*

@@ -209,7 +209,7 @@ export default function CheckoutPage() {
 
                 <button
                   onClick={handleCheckout}
-                  disabled={processing}
+                  disabled={processing || (requiresInvoice && rfc.length > 0 && rfc.length < 12)}
                   className="w-full bg-brand hover:bg-brand-dark disabled:bg-gray-700 disabled:text-gray-500 text-black font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
                 >
                   {processing ? (
