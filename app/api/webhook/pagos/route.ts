@@ -147,9 +147,9 @@ export async function POST(req: NextRequest) {
         correlationId,
       });
 
-      // Trigger queue processing (await to ensure it fires on serverless)
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
-      await fetch(`${appUrl}/api/queue/process`, { method: "POST" }).catch(() => {});
+      // Trigger queue processing directly (no HTTP call — reliable on serverless)
+      const { processQueue } = await import("@/lib/queue-runner");
+      await processQueue();
     } else if (event === "payment.rejected") {
       await logAudit("PAYMENT_GW", "ERROR", `Pago rechazado - Reservas liberadas`, {
         orderId,
