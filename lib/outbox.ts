@@ -32,14 +32,25 @@ export async function createOutboxEvent(
 }
 
 /**
- * Fetch events ready for processing (PENDING or FAILED with backoff elapsed).
+ * Fetch events ready for processing (PENDING, FAILED with backoff elapsed,
+ * or PROCESSING stuck for more than 60s).
  */
 export async function fetchProcessableEvents(limit = 5) {
+  const stuckThreshold = new Date(Date.now() - 60_000);
+
   return prisma.outboxEvent.findMany({
     where: {
-      status: { in: ["PENDING", "FAILED"] },
-      nextAttemptAt: { lte: new Date() },
-      attempts: { lt: 5 },
+      OR: [
+        {
+          status: { in: ["PENDING", "FAILED"] },
+          nextAttemptAt: { lte: new Date() },
+          attempts: { lt: 5 },
+        },
+        {
+          status: "PROCESSING",
+          nextAttemptAt: { lte: stuckThreshold },
+        },
+      ],
     },
     orderBy: { createdAt: "asc" },
     take: limit,
