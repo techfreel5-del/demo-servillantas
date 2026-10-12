@@ -24,7 +24,7 @@ interface OrderData {
   branch: { name: string };
   createdAt: string;
   items: { qty: number; unitPriceCents: number; product?: { brand: string; model: string; width: number; aspectRatio: number; rim: number } }[];
-  invoices: { uuid: string; folio: string; xml: string }[];
+  invoices: { id: string; uuid: string; folio: string; xml: string }[];
 }
 
 const STATUS_STEPS = [
@@ -145,6 +145,13 @@ export default function OrdenPage({ params }: { params: Promise<{ id: string }> 
                 >
                   <Download className="w-3.5 h-3.5" /> Descargar XML
                 </button>
+                <a
+                  href={`/api/facturacion/pdf/${invoice.id}`}
+                  download={`${invoice.folio}.pdf`}
+                  className="flex items-center gap-1.5 bg-brand/10 text-brand text-xs px-3 py-2 rounded-lg hover:bg-brand/20 transition-colors"
+                >
+                  <FileText className="w-3.5 h-3.5" /> Descargar PDF
+                </a>
               </div>
               <p className="text-[10px] text-gray-600 mt-2">DOCUMENTO SIN VALIDEZ FISCAL - DEMO</p>
             </div>
