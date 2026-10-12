@@ -148,7 +148,7 @@ export async function POST(req: NextRequest) {
       });
 
       // Trigger queue processing (non-blocking)
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
       fetch(`${appUrl}/api/queue/process`, { method: "POST" }).catch(() => {});
     } else if (event === "payment.rejected") {
       await logAudit("PAYMENT_GW", "ERROR", `Pago rechazado - Reservas liberadas`, {

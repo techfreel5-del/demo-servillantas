@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     });
 
     // Trigger processing
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
     fetch(`${appUrl}/api/queue/process`, { method: "POST" }).catch(() => {});
 
     return NextResponse.json({ retried: true, eventId });

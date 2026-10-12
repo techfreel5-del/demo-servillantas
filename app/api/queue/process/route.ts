@@ -11,7 +11,7 @@ export async function POST() {
       return NextResponse.json({ processed: 0 });
     }
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
     let processed = 0;
 
     for (const event of events) {
@@ -112,11 +112,13 @@ export async function POST() {
       }
     }
 
-    // If we processed events that may have enqueued more, trigger another round
+    // If we processed events that may have enqueued more, process them immediately
     if (processed > 0) {
-      setTimeout(() => {
+      const moreEvents = await fetchProcessableEvents(5);
+      if (moreEvents.length > 0) {
+        // Fire next round non-blocking (works on Vercel unlike setTimeout)
         fetch(`${appUrl}/api/queue/process`, { method: "POST" }).catch(() => {});
-      }, 1500);
+      }
     }
 
     return NextResponse.json({ processed, total: events.length });
